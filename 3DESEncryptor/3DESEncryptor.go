@@ -1,13 +1,4 @@
-/*
-            Project Augustus Loader
-                VERSION: 1.0
- AUTHOR: @tunnelgre - https://twitter.com/tunnelgre
-	              
-
-*/
-
-
-package main
+package DESEnc
 
 import (
 	"bytes"
@@ -19,11 +10,11 @@ import (
 )
 
 func main() {
-	key := generateRandomBytes(24) 
-	iv := generateRandomBytes(des.BlockSize) 
+	key := generateRandomBytes(24)
+	iv := generateRandomBytes(des.BlockSize)
 
-	fmt.Printf("Key: %s\n", formatShellcode(key))  
-	fmt.Printf("IV: %s\n", formatShellcode(iv))   
+	fmt.Printf("Key: %s\n", formatShellcode(key))
+	fmt.Printf("IV: %s\n", formatShellcode(iv))
 
 	shellcode := []byte("")
 
@@ -34,7 +25,6 @@ func main() {
 	}
 
 	fmt.Printf("Shellcode encrypted: %s\n", formatShellcode(encryptedShellcode))
-
 
 }
 
@@ -62,14 +52,11 @@ func encryptDES3(plaintext, key, iv []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-
-
 func pad(data []byte, blockSize int) []byte {
 	padding := blockSize - len(data)%blockSize
 	padText := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(data, padText...)
 }
-
 
 func shellcodeToHex(data []byte) string {
 	return hex.EncodeToString(data)
