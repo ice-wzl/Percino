@@ -60,7 +60,7 @@ func getShellcode(shellCodeFile string) ([]byte, error) {
 }
 
 func writeShellcode(finalShellcode []byte) {
-	err := os.WriteFile("final_shellcode.txt", finalShellcode, os.FileMode(os.O_CREATE)|os.FileMode(os.O_WRONLY))
+	err := os.WriteFile("final_shellcode.txt", finalShellcode, 0o644)
 	if err != nil {
 		fmt.Printf("[-] Error writing shellcode to: final_shellcode.txt\n")
 	}
