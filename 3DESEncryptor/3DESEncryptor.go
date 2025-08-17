@@ -1,22 +1,39 @@
-package DESEnc
+package main
 
 import (
 	"bytes"
 	"crypto/cipher"
 	"crypto/des"
 	"crypto/rand"
-	"encoding/hex"
+	"flag"
 	"fmt"
+	"io"
+	"os"
 )
 
 func main() {
+	shellcodeFile := flag.String("f", "", "File containing your shellcode")
+	flag.Parse()
+
+	if *shellcodeFile == "" {
+		fmt.Printf("[-] Please include your raw shellcode file with -f\n")
+		os.Exit(1)
+	}
+
+	programDriver(*shellcodeFile)
+}
+
+func programDriver(shellcodeFile string) {
+	shellcode, err := getShellcode(shellcodeFile)
+	if err != nil {
+		fmt.Printf("[-] Error: %v\n", err)
+	}
+
 	key := generateRandomBytes(24)
 	iv := generateRandomBytes(des.BlockSize)
 
 	fmt.Printf("Key: %s\n", formatShellcode(key))
 	fmt.Printf("IV: %s\n", formatShellcode(iv))
-
-	shellcode := []byte("")
 
 	encryptedShellcode, err := encryptDES3(shellcode, key, iv)
 	if err != nil {
@@ -26,6 +43,27 @@ func main() {
 
 	fmt.Printf("Shellcode encrypted: %s\n", formatShellcode(encryptedShellcode))
 
+	writeShellcode([]byte(formatShellcode(encryptedShellcode)))
+}
+
+func getShellcode(shellCodeFile string) ([]byte, error) {
+	f, err := os.Open(shellCodeFile)
+	if err != nil {
+		return nil, fmt.Errorf("[-] Error opening: %v: %v", shellCodeFile, err)
+	}
+	defer f.Close()
+	shellcodeBytes, err := io.ReadAll(f)
+	if err != nil {
+		return nil, fmt.Errorf("[-] Error reading: %v: %v", shellCodeFile, err)
+	}
+	return shellcodeBytes, nil
+}
+
+func writeShellcode(finalShellcode []byte) {
+	err := os.WriteFile("final_shellcode.txt", finalShellcode, os.FileMode(os.O_CREATE)|os.FileMode(os.O_WRONLY))
+	if err != nil {
+		fmt.Printf("[-] Error writing shellcode to: final_shellcode.txt\n")
+	}
 }
 
 func generateRandomBytes(size int) []byte {
@@ -56,10 +94,6 @@ func pad(data []byte, blockSize int) []byte {
 	padding := blockSize - len(data)%blockSize
 	padText := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(data, padText...)
-}
-
-func shellcodeToHex(data []byte) string {
-	return hex.EncodeToString(data)
 }
 
 func formatShellcode(data []byte) string {

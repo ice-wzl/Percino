@@ -1,4 +1,4 @@
-package percino
+package main
 
 import (
 	"crypto/cipher"

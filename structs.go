@@ -1,4 +1,4 @@
-package percino
+package main
 
 type PROCESS_BASIC_INFORMATION struct {
 	Reserved1    uintptr
